@@ -18,6 +18,30 @@ public class Resume {
 	private String stuExperience;
 	private String jobExperience;
 	private String assess;
+	
+	public Resume(){}
+	
+	public Resume(String name, String username, Integer sex, Integer age,
+			String nation, String education, String major, String college,
+			String address, String phone, String email, String stuExperience,
+			String jobExperience, String assess, String dataSource) {
+		super();
+		this.name = name;
+		this.username = username;
+		this.sex = sex;
+		this.age = age;
+		this.nation = nation;
+		this.education = education;
+		this.major = major;
+		this.college = college;
+		this.address = address;
+		this.phone = phone;
+		this.email = email;
+		this.stuExperience = stuExperience;
+		this.jobExperience = jobExperience;
+		this.assess = assess;
+		this.dataSource = dataSource;
+	}
 	private String dataSource;
 	
 	

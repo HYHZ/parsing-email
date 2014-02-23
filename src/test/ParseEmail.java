@@ -30,8 +30,9 @@ public class ParseEmail {
 	 */
 	public static void main(String args[]) throws Exception {
 		//new ParseEmail().getLinks2();
-		new ParseEmail().parseing51();
-		new ParseEmail().parseingZL();
+		//new ParseEmail().parseing51();
+		//new ParseEmail().parseingZL();
+		new ParseEmail().parseingZol();
 		
 	}
 
@@ -55,6 +56,54 @@ public class ParseEmail {
 		}
 
 		return messages;
+	}
+	
+	
+	
+	public void parseingZol(){
+		String protocol = "pop3";
+		String host = "pop3.163.com";
+		Integer port = 110;
+		String file = null;
+		String username = "lepintongcjol@163.com";
+		String password = "lepintong201401";
+
+		Message message[] = this.getMessages(protocol, host, port, file,
+				username, password);
+		Integer mesLength = message.length;
+		String[] allLinks = new String[mesLength];
+		ReciveOneMail pmm = null;
+
+		for (int i = 0; i < mesLength; i++) {
+			pmm = new ReciveOneMail((MimeMessage) message[i]);
+			try {
+				pmm.getMailContent((Part) message[i]);
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+			Document doc = Jsoup.parse(pmm.getBodyText());
+			Element body = doc.body();
+			username = body.select("body > table:eq(2) tr:eq(0) td:eq(0)").text();
+			String sex = body.select(":containsOwn(性别：)").first().nextElementSibling().text();
+			String age = body.select(":containsOwn(年龄：)").first().nextElementSibling().text();
+			String education = body.select(":containsOwn(学历：)").first().nextElementSibling().text();
+			String major = body.select(":containsOwn(专业：)").first().nextElementSibling().text();
+			String college = body.select(":containsOwn(毕业院校：)").first().nextElementSibling().text();
+			String phone = body.select(":containsOwn(手机号码：)").first().nextElementSibling().text();
+			String email = body.select(":containsOwn(Email：)").first().nextElementSibling().text();
+			String address = body.select(":containsOwn(通信地址：)").first().nextElementSibling().text();
+			
+			String jobExperience = body.select(":containsOwn(工作经历)").first().parent().nextElementSibling().text();
+			String stuExperience = body.select(":containsOwn(教育背景)").first().parent().nextElementSibling().text();
+			String assess = body.select(":containsOwn(工作经历详细介绍)").first().parent().nextElementSibling().text();
+			System.out.println(username+"||"+sex+"||"+age+"||"+education+"||"+major+"||"+college);
+			System.out.println(phone+"||"+email+"||"+address);
+			System.out.println(jobExperience);
+			System.out.println(stuExperience);
+			System.out.println(assess);
+			//System.out.println(doc.html());
+			break;
+		}
 	}
 
 	public void parseing51() {
@@ -343,4 +392,5 @@ public class ParseEmail {
 		bos.close();
 		return bos.toByteArray();
 	}
+	
 }

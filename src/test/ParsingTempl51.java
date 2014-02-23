@@ -4,7 +4,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class ParsingTempl51 {
+public class ParsingTempl51 implements ParsingTemplate{
 
 	private Document doc;
 	private Element resumeDiv;
