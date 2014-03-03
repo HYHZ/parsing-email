@@ -1,7 +1,6 @@
 package test;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -23,17 +22,22 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+/**
+ * 解析Email类,提供程序运行入口Main函数
+ * @author sylvan__
+ *
+ */
 public class ParseEmail {
 
 	/**
-	 * PraseMimeMessage类测试
+	 * 解析Email执行方法
 	 */
 	public static void main(String args[]) throws Exception {
-		//new ParseEmail().getLinks2();
-		//new ParseEmail().parseing51();
-		//new ParseEmail().parseingZL();
-		new ParseEmail().parseingZol();
 		
+		ParseEmail pe = new ParseEmail();
+		pe.parseing51();
+		pe.parseingZL();
+		pe.parseingZol();
 	}
 
 	public Message[] getMessages(String protocol, String host, Integer port,
