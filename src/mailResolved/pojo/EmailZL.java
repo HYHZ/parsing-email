@@ -1,6 +1,8 @@
 package mailResolved.pojo;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.mail.Message;
 import javax.mail.Part;
@@ -26,9 +28,12 @@ public class EmailZL extends Email {
 	String username = "lepintongzhaopin@163.com";
 	String password = "lepintong201401";
 
+
 	public static void main(String[] args) {
 
-		new EmailZL().parseingZL();
+		for(int i=0;i<100;i++){
+			new EmailZL().parseingZL();
+		}
 	}
 
 	public void parseingZL() {
@@ -37,9 +42,9 @@ public class EmailZL extends Email {
 		date.getTime();
 		ReciveOneMail pmm = null;
 		String html = "";
-		Integer successCount = 0;
+		Integer successCount = 0; // 成功个数
 
-		System.out.println("ZL parsing start.......");
+		System.out.println("智联解析开始，，解析邮箱为:"+username);
 
 		// 取得所有信息
 		Message message[] = this.getMessages(PROTOCOL, host, PORT, FILE,
@@ -47,43 +52,40 @@ public class EmailZL extends Email {
 
 		// 得到邮件的总条数
 		Integer mesLength = message.length;
-		System.out.println("Total emails counts is " + mesLength);
+		System.out.println("共有邮件" + mesLength+"封");
+
+		List<Resume> resumes = new ArrayList<Resume>();
 
 		// 开始轮询解析
 		for (int i = 0; i < mesLength; i++) {
 			pmm = new ReciveOneMail((MimeMessage) message[i]);
 			try {
-
 				System.out.print("正在解析第 " + (i + 1) + "封邮件 : "
 						+ pmm.getSubject() + "......"); // 打印邮件主题
 				pmm.getMailContent((Part) message[i]);
-
 				html = super.parseingHtmlAttchement((Part) message[i]);
-
 				Document doc = Jsoup.parse(html);
-
-				this.saveZL(doc);
+				resumes.add(this.getResumeByDoc(doc));
 				System.out.print("解析完成\n");
 				successCount++;
 			} catch (Exception e1) {
 				System.out.print("解析失败,跳过!\n");
 				e1.printStackTrace();
 			}
-			//break;
+			break;
 		}
-
+		new JDBCUtil().insert2(resumes);
 		System.out
 		.println("邮件解析完成,共" + successCount + "/" + mesLength
 				+ "个邮件被解析,共用时"
 				+ (new Date().getTime() - date.getTime()) + "ms");
 	}
 
-	public void saveZL(Document resumeHtml) {
+	public Resume getResumeByDoc(Document resumeHtml) {
 
 		ParsingTemplZL pt = new ParsingTemplZL(resumeHtml);
 
 		Resume r = new Resume();
-		//r.setName("zzzzzzzzz");
 		r.setUsername(pt.getUsername());
 		r.setSex(pt.getSex());
 		r.setAge(pt.getAge());
@@ -98,7 +100,7 @@ public class EmailZL extends Email {
 		r.setJobExperience(pt.getJobExperience());
 		r.setAssess(pt.getAssess());
 		r.setDataSource("智联");
-		new JDBCUtil().insert2(r);
+		return r;
 	}
 
 }

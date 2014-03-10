@@ -29,6 +29,7 @@ public class Email {
 	public static String FILE = null;
 	
 	public Boolean isDebug = false;
+	
 
 	/**
 	 * 返回邮件列表数据集

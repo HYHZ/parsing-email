@@ -7,8 +7,10 @@ import javax.mail.Message;
 import javax.mail.Session;
 import javax.mail.Store;
 import javax.mail.URLName;
+
 import mailResolved.pojo.Email51Job;
 import mailResolved.pojo.EmailCJOL;
+import mailResolved.pojo.EmailZL;
 
 /**
  * 解析Email类,提供程序运行入口Main函数
@@ -23,6 +25,7 @@ public class ParseEmail {
 	public static void main(String args[]) throws Exception {
 		
 		//pe.parseingZL();
+		new EmailZL().parseingZL();
 		new EmailCJOL().parseingZol();
 		new Email51Job().parseing51Job();
 	}

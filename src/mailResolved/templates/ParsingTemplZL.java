@@ -25,22 +25,18 @@ public class ParsingTemplZL {
 
 	public String getUsername() {
 		String username = getResumeDiv().select(".main-title-fl").text();
-		System.out.println(username);
 		return username;
 	}
 
 	public Integer getSex() {
 		String blue = getResumeDiv().select(".summary-top span").first().html();
-		System.out.println(blue);
 		String sexString = blue.split("&nbsp;&nbsp;&nbsp;&nbsp;")[0];
-		System.out.println(sexString);
 		return "男".equals(sexString.trim()) ? 1 : 0;
 	}
 
 	public Integer getAge() {
 		String blue = getResumeDiv().select(".summary-top span").first().html();
 		String sexString = blue.split("&nbsp;&nbsp;&nbsp;&nbsp;")[1].split("岁")[0];
-		System.out.println(sexString);
 		return Integer.valueOf(sexString);
 	}
 
@@ -50,10 +46,8 @@ public class ParsingTemplZL {
 		if (Lables.size() > 0) {
 			Element label = Lables.first();
 			String stuExperience = label.nextElementSibling().html();
-			System.out.println(stuExperience);
 			education = stuExperience.split("&nbsp;&nbsp;")[3].replaceAll(
 					"<br />", "").trim();
-			System.out.println(education);
 		}
 		return education;
 	}
@@ -65,7 +59,6 @@ public class ParsingTemplZL {
 			Element label = Lables.first();
 			String stuExperience = label.nextElementSibling().html();
 			education = stuExperience.split("&nbsp;&nbsp;")[2];
-			System.out.println(education);
 		}
 		return education;
 	}
@@ -77,7 +70,6 @@ public class ParsingTemplZL {
 			Element label = Lables.first();
 			String stuExperience = label.nextElementSibling().html();
 			education = stuExperience.split("&nbsp;&nbsp;")[1];
-			System.out.println(education);
 		}
 		return education;
 	}
@@ -86,7 +78,6 @@ public class ParsingTemplZL {
 		String address = null;
 		String blue = getResumeDiv().select(".summary-top").first().text();
 		address = blue.split("现居住地：")[1].split(" \\| ")[0];
-		System.out.println(address);
 		return address;
 	}
 
@@ -94,14 +85,12 @@ public class ParsingTemplZL {
 		String phone = null;
 		String blue = getResumeDiv().select(".summary-bottom").first().html();
 		phone = blue.split("手机：")[1].split("<br \\/>")[0].trim();
-		System.out.println(phone);
 		return phone;
 	}
 
 	public String getEmail() {
 		String email = getResumeDiv().select(".summary-bottom a").first()
 				.text();
-		System.out.println(email);
 		return email.trim();
 	}
 
@@ -113,7 +102,6 @@ public class ParsingTemplZL {
 			Element stuExperienceLabel = stuExperienceLabels.first();
 			stuExperience = stuExperienceLabel.siblingElements().text();
 		}
-		System.out.println(stuExperience);
 		return stuExperience;
 	}
 
@@ -124,7 +112,6 @@ public class ParsingTemplZL {
 			Element lable = lables.first();
 			jobExperience = lable.siblingElements().text();
 		}
-		System.out.println(jobExperience);
 		return jobExperience;
 	}
 
@@ -135,7 +122,6 @@ public class ParsingTemplZL {
 			Element lable = lables.first();
 			assess = lable.siblingElements().text();
 		}
-		System.out.println(assess);
 		return assess;
 	}
 

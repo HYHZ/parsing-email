@@ -3,7 +3,9 @@ package mailResolved.utils.jdbc;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 import mailResolved.entity.Resume;
 
@@ -65,40 +67,43 @@ public class JDBCUtil {
 
 		return i;
 	}
-	
-	public int insert2(Resume resume) {
+
+	public void insert2(List<Resume> resumes) {
 		Connection conn = getConn();
-		int i = 0;
+
 		String sql = "insert into resumes "
 				+ "(resumeName,username,sex,age,nation,education,major"
 				+ ",college,address,phone,email,stuExperience,jobExperience,assess,dataSource) "
 				+ "values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 		PreparedStatement pstmt;
 		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, resume.getName());
-			pstmt.setString(2, resume.getUsername());
-			pstmt.setInt(3, resume.getSex());
-			pstmt.setInt(4, resume.getAge());
-			pstmt.setString(5, resume.getNation());
-			pstmt.setString(6, resume.getEducation());
-			pstmt.setString(7, resume.getMajor());
-			pstmt.setString(8, resume.getCollege());
-			pstmt.setString(9, resume.getAddress());
-			pstmt.setString(10, resume.getPhone());
-			pstmt.setString(11, resume.getEmail());
-			pstmt.setString(12, resume.getStuExperience());
-			pstmt.setString(13, resume.getJobExperience());
-			pstmt.setString(14, resume.getAssess());
-			pstmt.setString(15, resume.getDataSource());
-			i = pstmt.executeUpdate();
-			pstmt.close();
+			conn.setAutoCommit(false);
+			pstmt = conn.prepareStatement(sql,ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
+			for(Resume resume:resumes){  
+				pstmt.setString(1, resume.getName());
+				pstmt.setString(2, resume.getUsername());
+				pstmt.setInt(3, resume.getSex());
+				pstmt.setInt(4, resume.getAge());
+				pstmt.setString(5, resume.getNation());
+				pstmt.setString(6, resume.getEducation());
+				pstmt.setString(7, resume.getMajor());
+				pstmt.setString(8, resume.getCollege());
+				pstmt.setString(9, resume.getAddress());
+				pstmt.setString(10, resume.getPhone());
+				pstmt.setString(11, resume.getEmail());
+				pstmt.setString(12, resume.getStuExperience());
+				pstmt.setString(13, resume.getJobExperience());
+				pstmt.setString(14, resume.getAssess());
+				pstmt.setString(15, resume.getDataSource());
+				pstmt.addBatch();  
+			}
+			
+			pstmt.executeBatch();
+			conn.commit();  
 			conn.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
-		return i;
 	}
 
 }
