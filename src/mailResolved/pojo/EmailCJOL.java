@@ -16,7 +16,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-public class EmailCJOL extends Email {
+import test.TestThread;
+
+public class EmailCJOL extends Email implements Runnable{
 
 	String host = "pop3.163.com";
 	String username = "lepintongcjol@163.com";
@@ -26,6 +28,11 @@ public class EmailCJOL extends Email {
 
 	public static void main(String[] args){
 		new EmailCJOL().parseingZol();
+		
+//		EmailCJOL my = new EmailCJOL();
+//		new Thread(my, "1号窗口").start();
+//		new Thread(my, "2号窗口").start();
+//		new Thread(my, "3号窗口").start();
 	}
 
 	public void parseingZol() {
@@ -49,7 +56,7 @@ public class EmailCJOL extends Email {
 		for (int i = 0; i < mesLength; i++) {
 			pmm = new ReciveOneMail((MimeMessage) message[i]);
 			try {
-				System.out.print("正在解析第 " + (i + 1) + "封邮件 : "
+				System.out.print(Thread.currentThread().getName()+"正在解析第 " + (i + 1) + "封邮件 : "
 						+ pmm.getSubject() + "......"); // 打印邮件主题
 				pmm.getMailContent((Part) message[i]);
 				Document doc = Jsoup.parse(pmm.getBodyText());
@@ -96,6 +103,11 @@ public class EmailCJOL extends Email {
 		.println("邮件解析完成,共" + successCount + "/" + mesLength
 				+ "个邮件被解析,共用时"
 				+ (new Date().getTime() - date.getTime()) + "ms");
+	}
+
+	@Override
+	public void run() {
+		parseingZol();
 	}
 
 }
